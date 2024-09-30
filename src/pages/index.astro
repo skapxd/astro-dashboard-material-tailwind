@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "#/src/layouts/Layout.astro";
 ---
 
 <Layout title="Home">
@@ -56,7 +56,7 @@ import Layout from "../layouts/Layout.astro";
         fd0943-9873-533e-814b-4c1a3ef8611e
       >
         <div class="flex flex-col items-center space-y-4">
-          <p class="text-sm text-slate-600">
+          <p class="text-sm text-slate-600 text-center">
             Enter the 6-digit OTP sent to
             <span class="font-bold" id="6-digit"></span>
           </p>
@@ -137,6 +137,13 @@ import Layout from "../layouts/Layout.astro";
       const sixDigit = document.getElementById("6-digit");
       if (sixDigit) sixDigit.textContent = String(email);
       otpInputs[0].focus();
+      fetch('/api/send-otp', {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
     }
   });
 
