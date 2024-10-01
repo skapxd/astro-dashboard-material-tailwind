@@ -27,6 +27,18 @@ export default defineConfig({
     env: {
       validateSecrets: true,
       schema: {
+        NODE_ENV_C: envField.string({
+          context: "client",
+          access: "public",
+        }),
+        NODE_ENV_S: envField.string({
+          context: "server",
+          access: "public",
+        }),
+        SECRET_JWT: envField.string({
+          context: "server",
+          access: "secret",
+        }),
         DATABASE_URL: envField.string({
           context: "server",
           access: "secret",

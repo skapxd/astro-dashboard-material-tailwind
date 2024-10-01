@@ -6,25 +6,20 @@ export const seedOtp = async (db: Kysely<DB>) => {
   await db.schema
     .createTable("otp")
     .ifNotExists()
-    .addColumn("id", "text", (col) => col.primaryKey().notNull())
+    .addColumn("email", "text", (col) => col.primaryKey().notNull())
     .modifyEnd(sql`STRICT`)
     .execute();
 
-  if (await columnNotExists(db, "otp", "created_at")) {
+  const { evaluate } = columnNotExists(db, "otp");
+
+  if (await evaluate("created_at")) {
     await db.schema
       .alterTable("otp")
       .addColumn("created_at", "text", (col) => col.notNull())
       .execute();
   }
 
-  if (await columnNotExists(db, "otp", "email")) {
-    await db.schema
-      .alterTable("otp")
-      .addColumn("email", "text", (col) => col.notNull())
-      .execute();
-  }
-
-  if (await columnNotExists(db, "otp", "code")) {
+  if (await evaluate("code")) {
     await db.schema
       .alterTable("otp")
       .addColumn("code", "text", (col) => col.notNull())

@@ -126,10 +126,8 @@ import Layout from "#/src/layouts/Layout.astro";
     "form[fd0943-9873-533e-814b-4c1a3ef8611e]"
   ) as HTMLFormElement;
 
-  formEmail?.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const form = new FormData(event.target as HTMLFormElement);
+  const submitEmail = () => {
+    const form = new FormData(formEmail);
     const { email } = Object.fromEntries(form.entries());
     if (email) {
       formEmail.hidden = true;
@@ -137,18 +135,47 @@ import Layout from "#/src/layouts/Layout.astro";
       const sixDigit = document.getElementById("6-digit");
       if (sixDigit) sixDigit.textContent = String(email);
       otpInputs[0].focus();
-      fetch('/api/send-otp', {
-        method: 'POST',
+      fetch("/api/send-otp", {
+        method: "POST",
         body: JSON.stringify({ email }),
         headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+          "Content-Type": "application/json",
+        },
+      });
     }
+  };
+
+  formEmail?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    submitEmail();
+  });
+
+  formOtp?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const code: string[] = [];
+    otpInputs.forEach((input) => code.push(input.value));
+
+    const form = new FormData(formEmail);
+    const { email } = Object.fromEntries(form.entries());
+
+    fetch("/api/verify-otp", {
+      method: "POST",
+      body: JSON.stringify({ code: code.join(""), email }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((resp) => {
+      if (!resp.ok) {
+        otpInputs.forEach((input) => {
+          input.value = "";
+          input.classList.add("border-red-500");
+        });
+      }
+    });
   });
 
   document.querySelector("#Resend")?.addEventListener("click", () => {
-    alert("Resend OTP");
+    submitEmail();
   });
 
   document.querySelector("#Go-Back")?.addEventListener("click", () => {
@@ -160,7 +187,7 @@ import Layout from "#/src/layouts/Layout.astro";
     document.querySelectorAll('input[type="text"]');
 
   function handleChange(input: HTMLInputElement, index: number) {
-    const value = input.value.replace(/[^0-9]/g, ""); // Allow only digits
+    const value = input.value;
     input.value = value; // Set the value in the current input
     if (value && index < otpInputs.length - 1) {
       otpInputs[index + 1].focus(); // Move to the next input
@@ -177,5 +204,12 @@ import Layout from "#/src/layouts/Layout.astro";
   otpInputs.forEach((input, index) => {
     input.addEventListener("input", () => handleChange(input, index));
     input.addEventListener("keydown", (event) => handleBackspace(event, index));
+    input.addEventListener("paste", (event) => {
+      event.preventDefault();
+      const clipboardData = event.clipboardData?.getData("text") || "";
+      clipboardData.split("").forEach((char, i) => {
+        otpInputs[i].value = char;
+      });
+    });
   });
 </script>

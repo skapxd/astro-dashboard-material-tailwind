@@ -12,11 +12,26 @@ const { title } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <script
-      is:inline
-      type="module"
-      src="scripts/ripple.js"></script>
+    <script is:inline type="module" src="scripts/ripple.js"></script>
     <title>{title}</title>
+    <script>
+      import { record } from "@rrweb/all";
+      import { NODE_ENV_C } from "astro:env/client";
+
+      if (NODE_ENV_C === "production") {
+        record({
+          emit(event) {
+            fetch("/api/rrweb", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(event),
+            });
+          },
+        });
+      }
+    </script>
   </head>
   <body>
     <slot />
