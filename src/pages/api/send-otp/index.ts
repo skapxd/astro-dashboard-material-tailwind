@@ -6,7 +6,6 @@ import { join } from "path";
 import { db } from "#/src/db";
 import { DateTime } from "luxon";
 import { fileURLToPath } from "node:url";
-export const prerender = false;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, "..");

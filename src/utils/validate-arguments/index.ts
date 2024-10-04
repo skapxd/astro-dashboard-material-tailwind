@@ -1,7 +1,12 @@
-import 'reflect-metadata';
+import "reflect-metadata";
 
 import { validate } from "class-validator";
 import { type ClassConstructor, plainToInstance } from "class-transformer";
+import { createErrorBusinessFactory } from "../create-error-usiness-factory";
+
+export const ValidateArgumentsError = createErrorBusinessFactory(
+  "ValidateArgumentsError",
+);
 
 export type ValidateArguments = <T extends object, U extends T>(
   input: T,
@@ -14,7 +19,7 @@ export const validateArguments: ValidateArguments = async (input, cls) => {
   const errors = await validate(dto);
 
   if (errors.length > 0) {
-    throw new Error(JSON.stringify(errors, null, 2));
+    throw new ValidateArgumentsError(`Has ${errors.length} to validate arguments`, errors);
   }
 
   return dto;

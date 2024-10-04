@@ -1,8 +1,7 @@
 import type { APIRoute } from "astro";
 import { VerifyOtpDto } from "./dto";
 import { db } from "#/src/db";
-
-export const prerender = false;
+import { createJwt } from "#/src/utils/jwt";
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   if (request.headers.get("Content-Type") !== "application/json")
@@ -28,7 +27,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         .executeTakeFirstOrThrow();
     });
 
-    cookies.set("email", verifyOtpDto.email, { httpOnly: true, secure: true });
+    cookies.set("jwt", createJwt({ email: verifyOtpDto.email }), {
+      httpOnly: true,
+      path: "/",
+      sameSite: "strict",
+      secure: true,
+    });
 
     return Response.json({ message: "success" }, { status: 200 });
   } catch (error) {

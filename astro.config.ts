@@ -19,7 +19,7 @@ await new KyselyCodeGen().run([
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind()],
-  output: "hybrid",
+  output: "server",
   adapter: vercel(),
   experimental: {
     serverIslands: true,

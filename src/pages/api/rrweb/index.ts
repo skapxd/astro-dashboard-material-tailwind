@@ -4,8 +4,6 @@ import { db } from "#/src/db";
 import { DateTime } from "luxon";
 import { randomUUID } from "node:crypto";
 
-export const prerender = false;
-
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   if (request.headers.get("Content-Type") !== "application/json")
     return Response.json({ message: "Invalid content type" }, { status: 400 });
