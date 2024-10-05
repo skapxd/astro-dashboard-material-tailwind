@@ -1,0 +1,141 @@
+---
+import HomeIcon from "./svg/HomeIcon.astro";
+import ProfileIcon from "./svg/ProfileIcon.astro";
+import TableIcon from "./svg/TableIcon.astro";
+import NotificationIcon from "./svg/NotificationIcon.astro";
+import SignUpIcon from "./svg/SignUpIcon.astro";
+
+const items = [
+  {
+    pathName: "/admin",
+    title: "Dashboard",
+    svg: HomeIcon,
+    type: "btn",
+  },
+  {
+    pathName: "/admin/profile",
+    title: "Profile",
+    svg: ProfileIcon,
+    type: "btn",
+  },
+  {
+    pathName: "/admin/tables",
+    title: "Tables",
+    svg: TableIcon,
+    type: "btn",
+  },
+  {
+    pathName: "/admin/notifications",
+    title: "Notifications",
+    svg: NotificationIcon,
+    type: "btn",
+  },
+  {
+    title: "Auth Pages",
+    type: "label",
+  },
+  {
+    pathName: "/auth/sign-up",
+    title: "Sign Up",
+    svg: SignUpIcon,
+    type: "btn",
+  },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<aside class="aside">
+  <div class="relative">
+    <a class="py-6 px-8 text-center" href="#/">
+      <h6
+        class="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900"
+      >
+        Material Tailwind React
+      </h6>
+    </a>
+    <button
+      class="align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-8 max-w-[32px] h-8 max-h-[32px] rounded-lg text-xs text-white hover:bg-white/10 active:bg-white/30 absolute right-0 top-0 grid rounded-br-none rounded-tl-none xl:hidden"
+      type="button"
+    >
+      <span
+        class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2.5"
+          stroke="currentColor"
+          aria-hidden="true"
+          class="h-5 w-5 text-white"
+          data-darkreader-inline-stroke=""
+          style="--darkreader-inline-stroke: currentColor;"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          >
+          </path>
+        </svg>
+      </span>
+    </button>
+  </div>
+
+  <div class="m-4">
+    <ul class="mb-4 flex flex-col gap-1">
+      {
+        items.map((e) => {
+          if (e.type === "label") {
+            return (
+              <li class="mx-3.5 mt-4 mb-2">
+                <p class="label">{e.title}</p>
+              </li>
+            );
+          }
+
+          return (
+            <li>
+              <a
+                aria-current="page"
+                href={e.pathName}
+                class={
+                  currentPath === e.pathName
+                    ? "btn-sidebar-active"
+                    : "btn-sidebar"
+                }
+              >
+                {e.svg && <e.svg />}
+
+                <p class="title">{e.title}</p>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</aside>
+
+<style>
+  .aside {
+    @apply bg-white shadow-sm -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100;
+  }
+
+  .label {
+    @apply block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-black uppercase opacity-75;
+  }
+
+  .title {
+    @apply block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize;
+  }
+
+  .btn-sidebar {
+    @apply align-middle select-none font-sans font-bold text-center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30 w-full flex items-center gap-4 px-4 capitalize;
+  }
+
+  .btn-sidebar-active {
+    @apply align-middle select-none font-sans font-bold text-center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize;
+  }
+</style>
