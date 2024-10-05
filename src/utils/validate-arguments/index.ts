@@ -2,7 +2,7 @@ import "reflect-metadata";
 
 import { validate } from "class-validator";
 import { type ClassConstructor, plainToInstance } from "class-transformer";
-import { createErrorBusinessFactory } from "../create-error-usiness-factory";
+import { createErrorBusinessFactory } from "../create-error-business-factory";
 
 export const ValidateArgumentsError = createErrorBusinessFactory(
   "ValidateArgumentsError",

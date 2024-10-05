@@ -1,6 +1,6 @@
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { SECRET_JWT } from "astro:env/server";
-import { createErrorBusinessFactory } from "../create-error-usiness-factory";
+import { createErrorBusinessFactory } from "../create-error-business-factory";
 
 export interface CreateJwtProps {
   email: string;
@@ -27,7 +27,7 @@ export const verifyJwt = async (props: VerifyJwtProps) => {
 
   if (!payload) throw new JwtError("Token is falsy", payload);
 
-  if (Date.now() > payload.exp!)
+  if (Date.now() > (payload.exp ?? 0) * 1000!)
     throw new JwtError("Token is expired", payload);
 
   return payload;

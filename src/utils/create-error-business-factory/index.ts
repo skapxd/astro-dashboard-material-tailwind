@@ -1,4 +1,4 @@
-class BusinessError<T> extends Error {
+class BusinessError<T extends unknown> extends Error {
   metaData: T;
 
   constructor(name: string, message: string, metaData: T) {

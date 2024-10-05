@@ -28,7 +28,8 @@
     "luxon": "^3.5.0",
     "mjml": "^4.15.3",
     "reflect-metadata": "^0.2.2",
-    "rrweb": "^2.0.0-alpha.4"
+    "rrweb": "^2.0.0-alpha.4",
+    "urlpattern-polyfill": "^10.0.0"
   },
   "devDependencies": {
     "@swc/core": "^1.7.26",
